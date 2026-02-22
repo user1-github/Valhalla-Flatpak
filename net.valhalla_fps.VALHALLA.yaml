@@ -1,0 +1,50 @@
+id: net.valhalla_fps.VALHALLA
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+command: valhalla
+finish-args:
+  - --socket=pulseaudio
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --share=ipc
+  - --share=network
+  - --device=dri
+  - --persist=.VALHALLA
+modules:
+
+  - name: SDL2_image
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DSDL2IMAGE_DEPS_SHARED=OFF
+      - -DSDL2IMAGE_STRICT=ON
+    sources:
+      - type: archive
+        url: https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.8/SDL2_image-2.8.8.tar.gz
+        sha256: 2213b56fdaff2220d0e38c8e420cbe1a83c87374190cba8c70af2156097ce30a
+
+  - name: VALHALLA
+    no-autogen: true
+    subdir: source
+    post-install:
+      - mkdir -p ${FLATPAK_DEST}/share/valhalla
+      - cp -a ../data/ ../config/ ../bin/ ${FLATPAK_DEST}/share/valhalla
+      - install -Dm755 ../valhalla_unix ${FLATPAK_DEST}/bin/valhalla
+      - install -Dm644 ../data/interface/valknut.png ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png
+      - install -Dm644 ../net.valhalla_fps.VALHALLA.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
+      - install -Dm644 ../net.valhalla_fps.VALHALLA.metainfo.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml
+    sources:
+      - type: git
+        url: https://github.com/project-valhalla/main
+        tag: 'v1.0.0-beta.2'
+        commit: d8001f035947b5853c012358b30ac964c4ce6ba5
+      - type: shell
+        commands:
+          - sed -i 's#VALHALLA_DATA=.#VALHALLA_DATA=/app/share/valhalla/#g' valhalla_unix
+      - type: file
+        path: net.valhalla_fps.VALHALLA.desktop
+      - type: file
+        path: net.valhalla_fps.VALHALLA.metainfo.xml
+      - type: patch
+        path: valhalla-makefile.patch
