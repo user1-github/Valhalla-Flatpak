@@ -2,14 +2,14 @@
 # VALHALLA_DATA should refer to the directory in which VALHALLA data files are placed.
 #VALHALLA_DATA=~/VALHALLA
 #VALHALLA_DATA=/usr/local/VALHALLA
-VALHALLA_DATA=.
+VALHALLA_DATA=/app/share/valhalla
 
 # VALHALLA_BIN should refer to the directory in which VALHALLA executable files are placed.
-VALHALLA_BIN=${VALHALLA_DATA}/bin/bin_unix
+VALHALLA_BIN=/app/bin
 
 # VALHALLA_OPTIONS contains any command line options you would like to start VALHALLA with.
 #VALHALLA_OPTIONS=""
-VALHALLA_OPTIONS="-u${HOME}/.VALHALLA/v1.0.0-beta.2"
+VALHALLA_OPTIONS="-u${HOME}/.VALHALLA"
 
 # SYSTEM_NAME should be set to the name of your operating system.
 #SYSTEM_NAME=Linux
