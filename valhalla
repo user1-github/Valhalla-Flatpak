@@ -1,0 +1,65 @@
+#!/bin/sh
+# VALHALLA_DATA should refer to the directory in which VALHALLA data files are placed.
+#VALHALLA_DATA=~/VALHALLA
+#VALHALLA_DATA=/usr/local/VALHALLA
+VALHALLA_DATA=.
+
+# VALHALLA_BIN should refer to the directory in which VALHALLA executable files are placed.
+VALHALLA_BIN=${VALHALLA_DATA}/bin/bin_unix
+
+# VALHALLA_OPTIONS contains any command line options you would like to start VALHALLA with.
+#VALHALLA_OPTIONS=""
+VALHALLA_OPTIONS="-u${HOME}/.VALHALLA/v1.0.0-beta.2"
+
+# SYSTEM_NAME should be set to the name of your operating system.
+#SYSTEM_NAME=Linux
+SYSTEM_NAME=`uname -s`
+
+# MACHINE_NAME should be set to the name of your processor.
+#MACHINE_NAME=i686
+MACHINE_NAME=`uname -m`
+
+case ${SYSTEM_NAME} in
+Linux)
+  SYSTEM_NAME=linux_
+  ;;
+*)
+  SYSTEM_NAME=unknown_
+  ;;
+esac
+
+case ${MACHINE_NAME} in
+i486|i586|i686)
+  MACHINE_NAME=
+  ;;
+x86_64|amd64)
+  MACHINE_NAME=64_
+  ;;
+*)
+  if [ ${SYSTEM_NAME} != native_ ]
+  then
+    SYSTEM_NAME=native_
+  fi
+  MACHINE_NAME=
+  ;;
+esac
+
+if [ -x ${VALHALLA_BIN}/native_client ]
+then
+  SYSTEM_NAME=native_
+  MACHINE_NAME=
+fi
+
+if [ -x ${VALHALLA_BIN}/${SYSTEM_NAME}${MACHINE_NAME}client ]
+then
+  cd ${VALHALLA_DATA}
+  exec ${VALHALLA_BIN}/${SYSTEM_NAME}${MACHINE_NAME}client ${VALHALLA_OPTIONS} "$@"
+else
+  echo "Your platform does not have a pre-compiled VALHALLA client."
+  echo "Please follow the following steps to build a native client:"
+  echo "1) Ensure you have the SDL2, SDL2-image, SDL2-mixer, and OpenGL libraries installed."
+  echo "2) Type \"make -C source install\"."
+  echo "3) If the build succeeds, run this script again."
+  exit 1
+fi
+
