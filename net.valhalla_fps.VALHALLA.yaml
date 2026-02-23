@@ -11,6 +11,10 @@ finish-args:
   - --share=network
   - --device=dri
   - --persist=.VALHALLA
+cleanup:
+  - /include
+  - /lib/cmake
+  - /lib/pkgconfig
 modules:
 
   - name: SDL2_image
@@ -29,19 +33,19 @@ modules:
     subdir: source
     post-install:
       - mkdir -p ${FLATPAK_DEST}/share/valhalla
-      - cp -a ../data/ ../config/ ../bin/ ${FLATPAK_DEST}/share/valhalla
-      - install -Dm755 ../valhalla_unix ${FLATPAK_DEST}/bin/valhalla
+      - cp -a ../data ../config ${FLATPAK_DEST}/share/valhalla
+      - install -Dm755 ../bin/bin_unix/native_client -t ${FLATPAK_DEST}/bin
+      - install -Dm755 ../valhalla -t ${FLATPAK_DEST}/bin
       - install -Dm644 ../data/interface/valknut.png ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png
-      - install -Dm644 ../net.valhalla_fps.VALHALLA.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
-      - install -Dm644 ../net.valhalla_fps.VALHALLA.metainfo.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml
+      - install -Dm644 ../net.valhalla_fps.VALHALLA.desktop -t ${FLATPAK_DEST}/share/applications
+      - install -Dm644 ../net.valhalla_fps.VALHALLA.metainfo.xml -t ${FLATPAK_DEST}/share/metainfo
     sources:
       - type: git
         url: https://github.com/project-valhalla/main
         tag: 'v1.0.0-beta.2'
         commit: d8001f035947b5853c012358b30ac964c4ce6ba5
-      - type: shell
-        commands:
-          - sed -i 's#VALHALLA_DATA=.#VALHALLA_DATA=/app/share/valhalla/#g' valhalla_unix
+      - type: file
+        path: valhalla
       - type: file
         path: net.valhalla_fps.VALHALLA.desktop
       - type: file
