@@ -8,6 +8,10 @@
   <developer id="net.valhalla">
     <name>VALHALLA Team</name>
   </developer>
+  <branding>
+    <color type="primary" scheme_preference="light">#12ae0f</color>
+    <color type="primary" scheme_preference="dark">#0b5d09</color>
+  </branding>
   <summary>Arena shooter with a touch of Norse mythology</summary>
   <description>
     <p>
