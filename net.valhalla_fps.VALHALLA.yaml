@@ -32,13 +32,13 @@ modules:
     no-autogen: true
     subdir: source
     post-install:
-      - mkdir -p ${FLATPAK_DEST}/share/valhalla
-      - cp -a ../data ../config ${FLATPAK_DEST}/share/valhalla
-      - install -Dm755 ../bin/bin_unix/native_client -t ${FLATPAK_DEST}/bin
-      - install -Dm755 ../valhalla -t ${FLATPAK_DEST}/bin
-      - install -Dm644 ../data/interface/valknut.png ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png
-      - install -Dm644 ../net.valhalla_fps.VALHALLA.desktop -t ${FLATPAK_DEST}/share/applications
-      - install -Dm644 ../net.valhalla_fps.VALHALLA.metainfo.xml -t ${FLATPAK_DEST}/share/metainfo
+      - mkdir -p /app/share/valhalla
+      - cp -a ../data ../config /app/share/valhalla
+      - install -Dm755 ../bin/bin_unix/native_client -t /app/bin
+      - install -Dm755 ../valhalla -t /app/bin
+      - install -Dm644 ../data/interface/valknut.png /app/share/icons/hicolor/256x256/apps/net.valhalla_fps.VALHALLA.png
+      - install -Dm644 ../net.valhalla_fps.VALHALLA.desktop -t /app/share/applications
+      - install -Dm644 ../net.valhalla_fps.VALHALLA.metainfo.xml -t /app/share/metainfo
     sources:
       - type: git
         url: https://github.com/project-valhalla/main
@@ -50,5 +50,3 @@ modules:
         path: net.valhalla_fps.VALHALLA.desktop
       - type: file
         path: net.valhalla_fps.VALHALLA.metainfo.xml
-      - type: patch
-        path: valhalla-makefile.patch
