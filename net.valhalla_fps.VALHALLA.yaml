@@ -34,18 +34,18 @@ modules:
     post-install:
       - mkdir -p /app/share/valhalla
       - cp -a ../data ../config /app/share/valhalla
-      - install -Dm755 ../bin/bin_unix/native_client -t /app/bin
-      - install -Dm755 ../valhalla -t /app/bin
+      - install -Dm755 ../bin/bin_unix/native_client -t /app/share/valhalla/bin/bin_unix
+      - install -Dm755 ../valhalla_unix /app/bin/valhalla
       - install -Dm644 ../data/interface/valknut.png /app/share/icons/hicolor/256x256/apps/net.valhalla_fps.VALHALLA.png
       - install -Dm644 ../net.valhalla_fps.VALHALLA.desktop -t /app/share/applications
       - install -Dm644 ../net.valhalla_fps.VALHALLA.metainfo.xml -t /app/share/metainfo
     sources:
       - type: git
-        url: https://github.com/project-valhalla/main
-        tag: 'v1.0.0-beta.2'
-        commit: d8001f035947b5853c012358b30ac964c4ce6ba5
-      - type: file
-        path: valhalla
+        url: https://github.com/project-valhalla/base.git
+        commit: 9d4a21a808dad0b57e0aad863e426fd43df75480
+      - type: shell
+        commands:
+          - sed -i 's#VALHALLA_DATA=.#VALHALLA_DATA=/app/share/valhalla/#g' valhalla_unix
       - type: file
         path: net.valhalla_fps.VALHALLA.desktop
       - type: file
