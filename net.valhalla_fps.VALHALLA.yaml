@@ -2,7 +2,7 @@ id: net.valhalla_fps.VALHALLA
 runtime: org.freedesktop.Platform
 runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
-command: valhalla
+command: valhalla_unix
 finish-args:
   - --socket=pulseaudio
   - --socket=wayland
